@@ -1,5 +1,9 @@
 {
+  "typescript" : {
+    "ignoreBuildErrors" : true
+  },
   "compilerOptions": {
+    "noImplicitAny": false,
     "target": "es5",
     "lib": [
       "dom",

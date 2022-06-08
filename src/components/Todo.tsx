@@ -1,9 +1,20 @@
 import React , {memo} from 'react'
+import { deleteTodo } from '../actions/index'
 import cross from '../assets/closee.png'
+import { useDispatch } from 'react-redux'
 
-const TodoList = memo(() => {
+// type TodoProps = [
+//     list: [
+//         data : string,
+//     ]
+// ]
+
+const Todo = memo((props:any) => {
+    const dispatch = useDispatch();
+    const {list} = props;
+    // console.log('Todo console=',props)
     return(
-        <li>
+        <ul>
             <div className='grid grid-cols-[50px_550px_20px] relative shadow-xl bg-white p-5 box-border border-2 '>
                 <div className=''>
                     <input 
@@ -13,7 +24,7 @@ const TodoList = memo(() => {
                 </div>
                 <div>
                     <label className='bg-white col-span-3 italic font-bold text-xl'>
-                        Todo
+                        {list.data}
                     </label>
                 </div>
                 
@@ -21,12 +32,14 @@ const TodoList = memo(() => {
                 <img
                     src= {cross}
                     alt='Cross Icon'
-                    className=' hover:cursor-pointer'>
+                    className=' hover:cursor-pointer'
+                    onClick={() => dispatch(deleteTodo(1))} //Change to list.id later
+                    >
                 </img> 
                 </div>
                   
             </div>
-        </li>
+        </ul>
     )
 })
-export default TodoList;
+export default Todo;

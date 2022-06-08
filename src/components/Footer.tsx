@@ -1,20 +1,39 @@
 import React , {memo} from 'react'
-
+import { useDispatch } from 'react-redux'
+import { CompletedTodo ,AllTodo,ActiveTodo} from '../actions/index';
 const Footer = memo(props => {
+
+    const dispatch=useDispatch();
+
+    const handleComplete = () => {
+        dispatch(CompletedTodo());
+    }
+
+    const handleActive = () => {
+        dispatch(ActiveTodo());
+    }
+
+    const handleAll = () => {
+        dispatch(AllTodo());
+    }
+
     const filterBtn = [{
+        id : 1,
         title:'All',
         isActive:true,
-        onCLick: () =>{} ,
+        onCLick: handleAll ,
         link : ''
     } ,{
+        id : 2,
         title:'Active',
         isActive:false,
-        onCLick: () =>{} ,
+        onCLick: handleActive ,
         link : 'active'
     } ,{
+        id : 3,
         title:'Completed',
         isActive:false,
-        onCLick: () =>{} ,
+        onCLick:()=> handleComplete() ,
         link : 'completed'
     }]
 
@@ -27,9 +46,15 @@ const Footer = memo(props => {
                 
             <div className='flex gap-4 items-center'>
                 {
-                    filterBtn.map(btn => (
-                        <FilterBtn {...btn} />
-                    ))
+                    filterBtn.map(btn => {
+                        return( 
+                        <ul key={btn.id}>
+                                <FilterBtn  {...btn} />
+                        </ul>
+                            
+                        )
+                        }   
+                    )
                 }
                 
             </div>
@@ -45,13 +70,14 @@ const Footer = memo(props => {
 
 const FilterBtn = memo(props => {
     const { title, onClick , link, isActive } :any = props 
+    console.log(props)
     return(
         <>
-        <div className='border-1 p-1 text-center hover:ring ring-pink-100'>
+        <div className='border-1 p-1 text-center hover:cursor-pointer hover:ring ring-pink-100'>
             <a
-                href={`#/${link}`}
+                // href={`/${link}`}
                 className={`${isActive ? 'selected' : ''}`}
-                onClick={()=>{}}>
+                onClick={() => onClick()} >
                 {title}
             </a>
         </div>
