@@ -1,3 +1,13 @@
+export const changeTodo = (id, text) => {
+  return {
+    type: "CHANGE_TODO",
+    payload: {
+      id,
+      text,
+    },
+  };
+};
+
 export const addTodo = (data) => {
   return {
     type: "ADD_TODO",

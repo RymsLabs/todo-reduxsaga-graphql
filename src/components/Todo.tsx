@@ -2,7 +2,7 @@ import React, { memo, useState } from "react";
 import { deleteTodo } from "../actions/index";
 import cross from "../assets/closee.png";
 import { useDispatch } from "react-redux";
-import { markTodo, unmarkTodo } from "../actions/index";
+import { markTodo, unmarkTodo, changeTodo } from "../actions/index";
 
 // type TodoProps = [
 //     list: [
@@ -26,6 +26,7 @@ const Todo = memo((props: any) => {
 
   function handleChange(event) {
     setText(event.target.value);
+    dispatch(changeTodo(list.id, text));
   }
 
   function handleCheck() {
@@ -44,13 +45,14 @@ const Todo = memo((props: any) => {
             <input
               className="w-7 h-7 focus:ring-1 bg-gray-100 border-r-indigo-500"
               type="checkbox"
+              checked={list.completed}
               name={list.data}
               onChange={handleCheck}
             ></input>
           </div>
           <div>
             <label className="bg-white col-span-3 text-2xl italic">
-              {completed ? (
+              {list.completed ? (
                 <p className=" transition-all delay-50 line-through decoration-4 font-medium text-mercury-600">
                   {text}
                 </p>

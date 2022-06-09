@@ -37,8 +37,8 @@ const Header = memo(() => {
       <div>
         {list.map((elem) => {
           return (
-            <div key={elem.id}>
-              <Todo list={elem} />
+            <div>
+              <Todo key={elem.id} list={elem} />
             </div>
           );
         })}

@@ -6,6 +6,7 @@ import {
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
+
 const Footer = memo((props: any) => {
   const { list } = props;
 
@@ -32,24 +33,39 @@ const Footer = memo((props: any) => {
       id: 1,
       title: "All",
       isActive: true,
-      onCLick: handleAll,
+      // onCLick: handleAll,
       link: "",
     },
     {
       id: 2,
       title: "Active",
       isActive: false,
-      onCLick: handleActive,
+      // onCLick: handleActive,
       link: "active",
     },
     {
       id: 3,
       title: "Completed",
       isActive: false,
-      onCLick: () => handleComplete(),
+      // onCLick: () => handleComplete(),
       link: "completed",
     },
   ];
+
+  const onFiltersClick = (title: any) => {
+    switch (title) {
+      case "All":
+        handleAll();
+        break;
+      case "Active":
+        handleActive();
+        break;
+      case "Completed":
+        handleComplete();
+        break;
+    }
+  };
+
   console.log("IN footer", props);
   return (
     <footer className="text-center">
@@ -63,7 +79,7 @@ const Footer = memo((props: any) => {
           {filterBtn.map((btn) => {
             return (
               <ul key={btn.id}>
-                <FilterBtn {...btn} />
+                <FilterBtn {...btn} onFiltersClick={onFiltersClick} />
               </ul>
             );
           })}
@@ -81,20 +97,20 @@ const Footer = memo((props: any) => {
   );
 });
 
-const FilterBtn = memo((props) => {
-  const { title, onClick, link, isActive }: any = props;
+const FilterBtn = memo((props: any) => {
+  const { title, onFiltersClick, isActive } = props;
   // console.log(props);
 
   return (
     <>
       <div className="border-1 p-1 text-center hover:cursor-pointer hover:ring ring-pink-100">
-        <a
+        <button
           // href={`/${link}`}
           className={`${isActive ? "selected" : ""}`}
-          onClick={() => onClick()}
+          onClick={() => onFiltersClick(title)}
         >
           {title}
-        </a>
+        </button>
       </div>
     </>
   );
