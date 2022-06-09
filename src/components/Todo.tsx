@@ -1,45 +1,39 @@
-import React , {memo} from 'react'
+import React, { memo } from 'react'
+import { useDispatch } from 'react-redux'
 import { deleteTodo } from '../actions/index'
 import cross from '../assets/closee.png'
-import { useDispatch } from 'react-redux'
 
-// type TodoProps = [
-//     list: [
-//         data : string,
-//     ]
-// ]
-
-const Todo = memo((props:any) => {
+const Todo = memo((props: any) => {
     const dispatch = useDispatch();
-    const {list} = props;
-    // console.log('Todo console=',props)
-    return(
-        <ul>
-            <div className='grid grid-cols-[50px_550px_20px] relative shadow-xl bg-white p-5 box-border border-2 '>
-                <div className=''>
-                    <input 
+    const { list } = props;
+
+    return (
+        <li>
+            <div className='grid grid-cols-12 items-center relative shadow-xl bg-white p-5 box-border border-2 '>
+                <div className='col-span-1 items-center'>
+                    <input
                         type="radio"
-                        className='w-7 h-7 rounded-full bg-gray-100'>
+                        className='w-7 h-7 rounded-full bg-gray-100 cursor-pointer'>
                     </input>
                 </div>
-                <div>
+                <div className='col-span-10 '>
                     <label className='bg-white col-span-3 italic font-bold text-xl'>
                         {list.data}
                     </label>
                 </div>
-                
-                <div className='flex items-center'>
-                <img
-                    src= {cross}
-                    alt='Cross Icon'
-                    className=' hover:cursor-pointer'
-                    onClick={() => dispatch(deleteTodo(1))} //Change to list.id later
+
+                <div className='col-span-1 flex items-center'>
+                    <img
+                        src={cross}
+                        alt='Cross Icon'
+                        className='w-6 h-6 cursor-pointer'
+                        onClick={() => dispatch(deleteTodo(1))} //Change to list.id later
                     >
-                </img> 
+                    </img>
                 </div>
-                  
+
             </div>
-        </ul>
+        </li>
     )
 })
 export default Todo;
