@@ -1,5 +1,6 @@
 import React, { memo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   CompletedTodo,
   AllTodo,
@@ -8,6 +9,7 @@ import {
 } from "../actions/index";
 
 const Footer = memo((props: any) => {
+  const count: any = useSelector((state: any) => state.todoReducers.count);
   const { list } = props;
 
   const dispatch = useDispatch();
@@ -66,12 +68,12 @@ const Footer = memo((props: any) => {
     }
   };
 
-  console.log("IN footer", props);
+  console.log("IN footer", list);
   return (
     <footer className="text-center">
       <div className="grid grid-cols-[150px_350px_20px]  shadow-xl p-2 px-5 bg-white  box-border border-2 relative">
         <div className="flex gap-2 items-center">
-          <strong className="">{list.length}</strong>
+          <strong className="">{count}</strong>
           <span className="">Items left</span>
         </div>
 

@@ -1,44 +1,42 @@
-const initialData = {
-  list: [
-    {
-      id: "1",
-      data: "task1",
-      completed: false,
-    },
-  ],
-  og: [
-    {
-      id: "1",
-      data: "task1",
-      completed: false,
-    },
-  ],
+const initialData: any = {
+  list: [],
+  og: [],
   count: 0,
 };
 
 const todoReducers = (state = initialData, action) => {
   switch (action.type) {
-    case "CHANGE_TODO":
-      console.log("In CHange todo=", action.payload.text);
+    case "CHECK_ALL":
       state.list.map((item) => {
-        if (action.payload.id === item.id) {
-          item.data = action.payload.text;
-        }
+        item.completed = true;
       });
 
       state.og.map((item) => {
-        if (action.payload.id === item.id) {
-          item.data = action.payload.text;
-        }
+        item.completed = true;
       });
-
       return {
         ...state,
+        count: state.count,
+      };
+
+    case "UNCHECK_ALL":
+      state.list.map((item) => {
+        item.completed = false;
+      });
+
+      state.og.map((item) => {
+        item.completed = false;
+      });
+      return {
+        ...state,
+        count: state.count,
       };
 
     case "ADD_TODO":
-      const { id, data, completed } = action.payload;
-      const counter = state.count + 1;
+      const { id, data, completed }: any = action.payload;
+
+      ++state.count;
+
       return {
         ...state,
         list: [
@@ -57,29 +55,53 @@ const todoReducers = (state = initialData, action) => {
             completed: completed,
           },
         ],
-        count: counter,
+        count: state.count,
       };
 
     case "DELETE_TODO":
-      console.log("In Delete Section");
-      console.log("OG=", state.og);
-      console.log("List after deleted =", state);
-      const newList = state.list.filter((elem) => elem.id !== action.id);
-      const ogUpdateList = state.og.filter((elem) => elem.id !== action.id);
-      // const counter = state.count
+      state.count = 0;
+      const newList = state.list.filter((element) => element.id !== action.id);
+
+      const ogUpdateList = state.og.filter(
+        (element) => element.id !== action.id
+      );
+      newList.map((item) => {
+        if (item.completed === false) ++state.count;
+      });
+
       return {
         ...state,
         list: newList,
         og: ogUpdateList,
+        count: state.count,
       };
 
+    case "CHANGE_TODO":
+      state.list.map((item) => {
+        if (action.payload.id === item.id) {
+          item.data = action.payload.text;
+        }
+      });
+
+      state.og.map((item) => {
+        if (action.payload.id === item.id) {
+          item.data = action.payload.text;
+        }
+      });
+
+      return {
+        ...state,
+      };
     case "CHECK_TODO":
-      console.log("In Check todo Section");
-      //   console.log(action.payload);
       state.list.map((item) => {
         if (action.payload.id === item.id) {
           item.completed = true;
         }
+      });
+
+      state.count = 0;
+      state.list.map((item) => {
+        if (item.completed === false) state.count++;
       });
 
       state.og.map((item) => {
@@ -89,62 +111,93 @@ const todoReducers = (state = initialData, action) => {
       });
       return {
         ...state,
+        count: state.count,
       };
 
     case "UNCHECK_TODO":
-      console.log("In UNCheck todo Section");
-      //   console.log(action.payload);
       state.list.map((item) => {
         if (action.payload.id === item.id) {
           item.completed = false;
         }
+      });
+
+      state.count = 0;
+      state.list.map((item) => {
+        if (item.completed === false) state.count++;
       });
       state.og.map((item) => {
         if (action.payload.id === item.id) {
           item.completed = false;
         }
       });
+
       return {
         ...state,
+        count: state.count,
       };
 
     case "CLEAR_TODO":
-      const clearedList = state.list.filter((elem) => elem.completed === false);
-      const clearedOGList = state.og.filter((elem) => elem.completed === false);
+      const clearedList = state.list.filter(
+        (element) => element.completed === false
+      );
+      const clearedOGList = state.og.filter(
+        (element) => element.completed === false
+      );
+      state.count = 0;
+      state.og.map((item) => {
+        if (item.completed === false) state.count++;
+      });
       return {
         ...state,
         list: clearedList,
         og: clearedOGList,
+        count: state.count,
       };
 
     case "SHOW_ALL":
       console.log("In All Section");
       console.log("List All =", state);
       const ogSHowAll = state.og.filter(
-        (elem) => elem.completed === true || elem.completed === false
+        (element) => element.completed === true || element.completed === false
       );
+
+      state.count = 0;
+      state.list.map((item) => {
+        if (item.completed === false) state.count++;
+      });
 
       return {
         ...state,
         list: ogSHowAll,
+        count: state.count,
       };
 
     case "COMPLETED_TODO":
       console.log("In Completed Section");
       console.log("List after completed =", state);
-      const completedList = state.og.filter((elem) => elem.completed === true);
+      const completedList = state.og.filter(
+        (element) => element.completed === true
+      );
+      state.count = state.og.length - completedList.length;
+
       return {
         ...state,
         list: completedList,
+        count: state.count,
       };
 
     case "ACTIVE_TODO":
       console.log("In Active Section");
       console.log("List =", state);
-      const activeList = state.og.filter((elem) => elem.completed === false);
+      const activeList = state.og.filter(
+        (element) => element.completed === false
+      );
+      state.count = state.og.length - activeList.length;
       return {
         ...state,
         list: activeList,
+        // count: 0,
+        count: activeList.length,
       };
 
     default:

@@ -8,6 +8,18 @@ export const changeTodo = (id, text) => {
   };
 };
 
+export const checkAll = () => {
+  return {
+    type: "CHECK_ALL",
+  };
+};
+
+export const uncheckAll = () => {
+  return {
+    type: "UNCHECK_ALL",
+  };
+};
+
 export const addTodo = (data) => {
   return {
     type: "ADD_TODO",
