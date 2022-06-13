@@ -1,6 +1,6 @@
-import React, { memo } from "react";
+import React, { FC, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { RootState } from "../store";
 import {
   CompletedTodo,
   AllTodo,
@@ -8,8 +8,17 @@ import {
   ClearMarked,
 } from "../actions/index";
 
-const Footer = memo((props: any) => {
-  const count: any = useSelector((state: any) => state.todoReducers.count);
+type FooterProps = {
+  list: {
+    data: string;
+    id: number;
+    completed: boolean;
+  };
+};
+const Footer = memo((props: FooterProps) => {
+  const count: number = useSelector(
+    (state: RootState) => state.todoReducers.count
+  );
   const { list } = props;
 
   const dispatch = useDispatch();
@@ -54,7 +63,7 @@ const Footer = memo((props: any) => {
     },
   ];
 
-  const onFiltersClick = (title: any) => {
+  const onFiltersClick = (title: string) => {
     switch (title) {
       case "All":
         handleAll();
@@ -98,8 +107,12 @@ const Footer = memo((props: any) => {
     </footer>
   );
 });
-
-const FilterBtn = memo((props: any) => {
+type filterBtn = {
+  title: string;
+  onFiltersClick: (title: string) => void;
+  isActive: boolean;
+};
+const FilterBtn = memo((props: filterBtn) => {
   const { title, onFiltersClick, isActive } = props;
   // console.log(props);
 

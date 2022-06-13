@@ -1,3 +1,17 @@
+// interface Resource {
+//   list: {
+//     id: number;
+//     data: string;
+//     completed: boolean;
+//   };
+//   og: {
+//     id: number;
+//     data: string;
+//     completed: boolean;
+//   };
+//   count: number;
+// }
+
 const initialData: any = {
   list: [],
   og: [],

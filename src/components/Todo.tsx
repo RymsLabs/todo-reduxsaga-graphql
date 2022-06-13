@@ -1,16 +1,18 @@
-import React, { memo, useState } from "react";
+import React, { FormEventHandler, memo, useState } from "react";
 import { deleteTodo } from "../actions/index";
 import cross from "../assets/closee.png";
 import { useDispatch } from "react-redux";
 import { markTodo, unmarkTodo, changeTodo } from "../actions/index";
 
-// type TodoProps = [
-//     list: [
-//         data : string,
-//     ]
-// ]
+type TodoProps = {
+  list: {
+    data: string;
+    id: number;
+    completed: boolean;
+  };
+};
 
-const Todo = memo((props: any) => {
+const Todo = memo((props: TodoProps) => {
   const { list } = props;
   const [toggle, setToggle] = useState(true);
   const [text, setText] = useState(list.data);
@@ -24,7 +26,7 @@ const Todo = memo((props: any) => {
     setToggle(true);
   }
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setText(event.target.value);
     dispatch(changeTodo(list.id, text));
   }

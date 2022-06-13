@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, checkAll, uncheckAll } from "../actions/index";
+import { RootState } from "../store";
 import Todo from "./Todo";
 import Footer from "./Footer";
 
-const Header = memo(() => {
+const Header: React.FC = memo(() => {
   const dispatch = useDispatch();
-  const [inputData, setInputData]: any = useState("");
+  const [inputData, setInputData] = useState("");
+  // const ref = useRef(null);
   const [isChecked, setisChecked] = useState(false);
 
-  const list = useSelector((state: any) => state.todoReducers.list);
-  const og = useSelector((state: any) => state.todoReducers.og);
+  const list = useSelector((state: RootState) => state.todoReducers.list);
+  const og = useSelector((state: RootState) => state.todoReducers.og);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(addTodo(inputData));
     setInputData("");
+    // e.target.reset();
+    // ref.current.value = "";
   };
 
   const renderFooter = () => {
@@ -41,6 +45,7 @@ const Header = memo(() => {
           ></input>
           <input
             className="w-[600px] text-3xl  italic"
+            // ref={ref}
             type="text"
             name="name"
             placeholder="What needs to be done?"
