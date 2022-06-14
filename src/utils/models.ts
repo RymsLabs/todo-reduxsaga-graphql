@@ -1,11 +1,10 @@
-type IResource = {
+type ListItem = {
   // rename to Item
   id: number;
   data: string;
   completed: boolean;
 };
-type IAction = {
-  //rename to action
+type Action = {
   type: string;
   payload: {
     id: number;
@@ -14,11 +13,15 @@ type IAction = {
   };
 };
 
-type InitialDataState = {
-  // rename to todoreducerstate
-  list: IResource[];
-  og: IResource[];
+type TodoReducerState = {
+  list: ListItem[];
+  og: ListItem[];
   count: number;
 };
 
-export type { IResource, IAction, InitialDataState };
+type filterBtn = {
+  title: string;
+  onFiltersClick: (title: string) => void;
+  isActive: boolean;
+};
+export type { ListItem, Action, TodoReducerState, filterBtn };

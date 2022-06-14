@@ -18,24 +18,24 @@ const Todo = memo((props: TodoProps) => {
   const [text, setText] = useState(list.data);
   const [completed, setCompleted] = useState(false);
 
-  function toggleInput() {
+  const toggleInput = (): void => {
     setToggle(false);
-  }
+  };
 
-  function handleBlur() {
+  const handleBlur = (): void => {
     setToggle(true);
-  }
+  };
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
     dispatch(changeTodo(list.id, text));
-  }
+  };
 
-  function handleCheck() {
+  const handleCheck = (): void => {
     setCompleted(!completed);
     if (completed === false) dispatch(markTodo(list.id, !completed));
     else dispatch(unmarkTodo(list.id, !completed));
-  }
+  };
 
   const dispatch = useDispatch();
 

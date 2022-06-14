@@ -1,23 +1,18 @@
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
+import { filterBtn } from "../utils/models";
 import {
   CompletedTodo,
   AllTodo,
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
-import { IResource } from "../utils/models";
-
-// type FooterProps = {
-//   list: IResource[]
-// };
 
 const Footer = memo(() => {
   const count: number = useSelector(
     (state: RootState) => state.todoReducers.count
   );
-  // const { list } = props;
 
   const dispatch = useDispatch();
 
@@ -42,21 +37,18 @@ const Footer = memo(() => {
       id: 1,
       title: "All",
       isActive: true,
-      // onCLick: handleAll,
       link: "",
     },
     {
       id: 2,
       title: "Active",
       isActive: false,
-      // onCLick: handleActive,
       link: "active",
     },
     {
       id: 3,
       title: "Completed",
       isActive: false,
-      // onCLick: () => handleComplete(),
       link: "completed",
     },
   ];
@@ -75,7 +67,6 @@ const Footer = memo(() => {
     }
   };
 
-  // console.log("IN footer", list);
   return (
     <footer className="text-center">
       <div className="grid grid-cols-[150px_350px_20px]  shadow-xl p-2 px-5 bg-white  box-border border-2 relative">
@@ -105,20 +96,14 @@ const Footer = memo(() => {
     </footer>
   );
 });
-type filterBtn = {
-  title: string;
-  onFiltersClick: (title: string) => void;
-  isActive: boolean;
-};
+
 const FilterBtn = memo((props: filterBtn) => {
   const { title, onFiltersClick, isActive } = props;
-  // console.log(props);
 
   return (
     <>
       <div className="border-1 p-1 text-center hover:cursor-pointer hover:ring ring-pink-100">
         <button
-          // href={`/${link}`}
           className={`${isActive ? "selected" : ""}`}
           onClick={() => onFiltersClick(title)}
         >

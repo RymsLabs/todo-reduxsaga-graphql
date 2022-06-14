@@ -41,8 +41,6 @@ export const deleteTodo = (id: number) => {
 };
 
 export const markTodo = (id: number, completed: boolean) => {
-  //   console.log("in mark todo with id =", id);
-  //   console.log("completed=", completed);
   return {
     type: "CHECK_TODO",
     payload: {
@@ -53,8 +51,6 @@ export const markTodo = (id: number, completed: boolean) => {
 };
 
 export const unmarkTodo = (id: number, completed: boolean) => {
-  // console.log("in unmark todo with id =", id);
-  // console.log("completed=", completed);
   return {
     type: "UNCHECK_TODO",
     payload: {

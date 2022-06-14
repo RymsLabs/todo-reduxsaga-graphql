@@ -1,38 +1,14 @@
-// export interface IResource {
-//   // rename to Item
-//   id: number;
-//   data: string;
-//   completed: boolean;
-// }
-// interface IAction {
-//   //rename to action
-//   type: string;
-//   payload: {
-//     id: number;
-//     completed: boolean;
-//     text: string;
-//   };
-// }
+import { Action, TodoReducerState } from "../utils/models";
 
-import { IAction, InitialDataState } from "../utils/models";
-
-// export interface InitialDataState {
-//   // rename to todoreducerstate
-//   list: IResource[];
-//   og: IResource[];
-//   count: number;
-// }
-
-// const list: IResource[] = [];
-// const og: IResource[] = [];
-
-const initialData: InitialDataState = {
+const initialData: TodoReducerState = {
   list: [],
   og: [],
   count: 0,
 };
 
-const todoReducers = (state = initialData, action: IAction) => {
+const todoReducers = (state = initialData, action: Action) => {
+  let count = state.count;
+
   switch (action.type) {
     case "CHECK_ALL":
       state.list.map((item) => {
@@ -62,10 +38,9 @@ const todoReducers = (state = initialData, action: IAction) => {
 
     case "ADD_TODO":
       const { id, text, completed } = action.payload;
-      let count = state.count;
+
       ++count;
 
-      // console.log(list);
       return {
         ...state,
         list: [
@@ -88,7 +63,7 @@ const todoReducers = (state = initialData, action: IAction) => {
       };
 
     case "DELETE_TODO":
-      state.count = 0;
+      count = 0;
       const newList = state.list.filter(
         (element) => element.id !== action.payload.id
       );
@@ -96,15 +71,16 @@ const todoReducers = (state = initialData, action: IAction) => {
       const ogUpdateList = state.og.filter(
         (element) => element.id !== action.payload.id
       );
+
       newList.map((item) => {
-        if (item.completed === false) ++state.count;
+        if (item.completed === false) ++count;
       });
 
       return {
         ...state,
         list: newList,
         og: ogUpdateList,
-        count: state.count,
+        count: count,
       };
 
     case "CHANGE_TODO":
@@ -123,38 +99,50 @@ const todoReducers = (state = initialData, action: IAction) => {
       return {
         ...state,
       };
+
     case "CHECK_TODO":
-      state.list.map((item) => {
-        if (action.payload.id === item.id) {
-          item.completed = true;
+      count = 0;
+      let tempState = state.list;
+      let tempOGState = state.list;
+      tempState = tempState.map((item) => {
+        let tempItem = item;
+        if (action.payload.id === tempItem.id) {
+          tempItem["completed"] = true;
         }
+        return tempItem;
+      });
+      console.log(tempState);
+
+      tempState.map((item) => {
+        if (item.completed === false) count++;
       });
 
-      state.count = 0;
-      state.list.map((item) => {
-        if (item.completed === false) state.count++;
+      tempOGState = tempOGState.map((item) => {
+        let tempItem = item;
+        if (action.payload.id === tempItem.id) {
+          // tempItem.completed = true;
+        }
+        return tempItem;
       });
 
-      state.og.map((item) => {
-        if (action.payload.id === item.id) {
-          item.completed = true;
-        }
-      });
       return {
         ...state,
-        count: state.count,
+        // list: tempState,
+        // state: copystate,
+        count: 0,
       };
 
     case "UNCHECK_TODO":
+      count = 0;
+
       state.list.map((item) => {
         if (action.payload.id === item.id) {
           item.completed = false;
         }
       });
 
-      state.count = 0;
       state.list.map((item) => {
-        if (item.completed === false) state.count++;
+        if (item.completed === false) count++;
       });
       state.og.map((item) => {
         if (action.payload.id === item.id) {
@@ -164,70 +152,69 @@ const todoReducers = (state = initialData, action: IAction) => {
 
       return {
         ...state,
-        count: state.count,
+        count: count,
       };
 
     case "CLEAR_TODO":
+      count = 0;
+
       const clearedList = state.list.filter(
         (element) => element.completed === false
       );
+
       const clearedOGList = state.og.filter(
         (element) => element.completed === false
       );
-      state.count = 0;
+
       state.og.map((item) => {
-        if (item.completed === false) state.count++;
+        if (item.completed === false) count++;
       });
+
       return {
         ...state,
         list: clearedList,
         og: clearedOGList,
-        count: state.count,
+        count: count,
       };
 
     case "SHOW_ALL":
-      console.log("In All Section");
-      console.log("List All =", state);
+      count = 0;
+
       const ogSHowAll = state.og.filter(
         (element) => element.completed === true || element.completed === false
       );
 
-      state.count = 0;
       state.list.map((item) => {
-        if (item.completed === false) state.count++;
+        if (item.completed === false) count++;
       });
 
       return {
         ...state,
         list: ogSHowAll,
-        count: state.count,
+        count: count,
       };
 
     case "COMPLETED_TODO":
-      console.log("In Completed Section");
-      console.log("List after completed =", state);
       const completedList = state.og.filter(
         (element) => element.completed === true
       );
-      state.count = state.og.length - completedList.length;
+      count = state.og.length - completedList.length;
 
       return {
         ...state,
         list: completedList,
-        count: state.count,
+        count: count,
       };
 
     case "ACTIVE_TODO":
-      console.log("In Active Section");
-      console.log("List =", state);
       const activeList = state.og.filter(
         (element) => element.completed === false
       );
-      state.count = state.og.length - activeList.length;
+      count = state.og.length - activeList.length;
       return {
         ...state,
         list: activeList,
-        // count: 0,
+
         count: activeList.length,
       };
 
