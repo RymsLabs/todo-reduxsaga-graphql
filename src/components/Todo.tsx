@@ -1,4 +1,4 @@
-import React, { FormEventHandler, memo, useState } from "react";
+import React, { memo, useState } from "react";
 import { deleteTodo } from "../actions/index";
 import cross from "../assets/closee.png";
 import { useDispatch } from "react-redux";

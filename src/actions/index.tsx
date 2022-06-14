@@ -1,4 +1,4 @@
-export const changeTodo = (id, text) => {
+export const changeTodo = (id: number, text: string) => {
   return {
     type: "CHANGE_TODO",
     payload: {
@@ -20,25 +20,27 @@ export const uncheckAll = () => {
   };
 };
 
-export const addTodo = (data) => {
+export const addTodo = (data: string) => {
   return {
     type: "ADD_TODO",
     payload: {
       id: new Date().getTime().toString(),
-      data: data,
+      text: data,
       completed: false,
     },
   };
 };
 
-export const deleteTodo = (id) => {
+export const deleteTodo = (id: number) => {
   return {
     type: "DELETE_TODO",
-    id,
+    payload: {
+      id,
+    },
   };
 };
 
-export const markTodo = (id, completed) => {
+export const markTodo = (id: number, completed: boolean) => {
   //   console.log("in mark todo with id =", id);
   //   console.log("completed=", completed);
   return {
@@ -50,9 +52,9 @@ export const markTodo = (id, completed) => {
   };
 };
 
-export const unmarkTodo = (id, completed) => {
-  console.log("in unmark todo with id =", id);
-  console.log("completed=", completed);
+export const unmarkTodo = (id: number, completed: boolean) => {
+  // console.log("in unmark todo with id =", id);
+  // console.log("completed=", completed);
   return {
     type: "UNCHECK_TODO",
     payload: {

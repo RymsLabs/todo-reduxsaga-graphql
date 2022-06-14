@@ -1,24 +1,28 @@
-// interface Resource {
-//   list: {
-//     id: number;
-//     data: string;
-//     completed: boolean;
-//   };
-//   og: {
-//     id: number;
-//     data: string;
-//     completed: boolean;
-//   };
-//   count: number;
-// }
+import { useState } from "react";
 
-const initialData: any = {
-  list: [],
-  og: [],
+export interface IResource {
+  id: number;
+  data: string;
+  completed: boolean;
+}
+interface IAction {
+  type: string;
+  payload: {
+    id: number;
+    completed: boolean;
+    text: string;
+  };
+}
+const list: IResource[] = [];
+const og: IResource[] = [];
+
+const initialData = {
+  list,
+  og,
   count: 0,
 };
 
-const todoReducers = (state = initialData, action) => {
+const todoReducers = (state = initialData, action: IAction) => {
   switch (action.type) {
     case "CHECK_ALL":
       state.list.map((item) => {
@@ -47,17 +51,17 @@ const todoReducers = (state = initialData, action) => {
       };
 
     case "ADD_TODO":
-      const { id, data, completed }: any = action.payload;
+      const { id, text, completed } = action.payload;
 
       ++state.count;
-
+      console.log(list);
       return {
         ...state,
         list: [
           ...state.list,
           {
             id: id,
-            data: data,
+            data: text,
             completed: completed,
           },
         ],
@@ -65,7 +69,7 @@ const todoReducers = (state = initialData, action) => {
           ...state.og,
           {
             id: id,
-            data: data,
+            data: text,
             completed: completed,
           },
         ],
@@ -74,10 +78,12 @@ const todoReducers = (state = initialData, action) => {
 
     case "DELETE_TODO":
       state.count = 0;
-      const newList = state.list.filter((element) => element.id !== action.id);
+      const newList = state.list.filter(
+        (element) => element.id !== action.payload.id
+      );
 
       const ogUpdateList = state.og.filter(
-        (element) => element.id !== action.id
+        (element) => element.id !== action.payload.id
       );
       newList.map((item) => {
         if (item.completed === false) ++state.count;

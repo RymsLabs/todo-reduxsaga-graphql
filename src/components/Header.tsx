@@ -1,21 +1,21 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, checkAll, uncheckAll } from "../actions/index";
 import { RootState } from "../store";
 import Todo from "./Todo";
 import Footer from "./Footer";
-
+import { IResource } from "../reducers/todoReducers";
 const Header: React.FC = memo(() => {
   const dispatch = useDispatch();
-  const [inputData, setInputData] = useState("");
+  const [inputData, setInputData] = useState<string>("");
+  const [isChecked, setisChecked] = useState<boolean>(false);
   // const ref = useRef(null);
-  const [isChecked, setisChecked] = useState(false);
 
-  const list = useSelector((state: RootState) => state.todoReducers.list);
+  const list: any = useSelector((state: RootState) => state.todoReducers.list); // HAVE TO ASK SIR
   const og = useSelector((state: RootState) => state.todoReducers.og);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(addTodo(inputData));
     setInputData("");
@@ -24,13 +24,16 @@ const Header: React.FC = memo(() => {
   };
 
   const renderFooter = () => {
-    if (og.length > 0) return <Footer key={list.id} list={list} />;
+    if (og.length > 0) return <Footer key={list.id} list={list} />; // ONE ERROR IN THIS LINE
   };
-  function handleCheck() {
+  function handleCheck(): void {
     setisChecked(!isChecked);
     if (isChecked === false) dispatch(checkAll());
     else dispatch(uncheckAll());
   }
+  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputData(event.target.value);
+  };
 
   return (
     <div className="">
@@ -50,7 +53,8 @@ const Header: React.FC = memo(() => {
             name="name"
             placeholder="What needs to be done?"
             value={inputData}
-            onChange={(event) => setInputData(event.target.value)}
+            // onChange={(event) => setInputData(event.target.value)}
+            onChange={handleInput}
           />
         </div>
       </form>
