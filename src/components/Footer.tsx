@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import {
@@ -7,19 +7,17 @@ import {
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
+import { IResource } from "../utils/models";
 
-type FooterProps = {
-  list: {
-    data: string;
-    id: number;
-    completed: boolean;
-  };
-};
-const Footer = memo((props: FooterProps) => {
+// type FooterProps = {
+//   list: IResource[]
+// };
+
+const Footer = memo(() => {
   const count: number = useSelector(
     (state: RootState) => state.todoReducers.count
   );
-  const { list } = props;
+  // const { list } = props;
 
   const dispatch = useDispatch();
 
@@ -77,7 +75,7 @@ const Footer = memo((props: FooterProps) => {
     }
   };
 
-  console.log("IN footer", list);
+  // console.log("IN footer", list);
   return (
     <footer className="text-center">
       <div className="grid grid-cols-[150px_350px_20px]  shadow-xl p-2 px-5 bg-white  box-border border-2 relative">

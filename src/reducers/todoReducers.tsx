@@ -1,24 +1,34 @@
-import { useState } from "react";
+// export interface IResource {
+//   // rename to Item
+//   id: number;
+//   data: string;
+//   completed: boolean;
+// }
+// interface IAction {
+//   //rename to action
+//   type: string;
+//   payload: {
+//     id: number;
+//     completed: boolean;
+//     text: string;
+//   };
+// }
 
-export interface IResource {
-  id: number;
-  data: string;
-  completed: boolean;
-}
-interface IAction {
-  type: string;
-  payload: {
-    id: number;
-    completed: boolean;
-    text: string;
-  };
-}
-const list: IResource[] = [];
-const og: IResource[] = [];
+import { IAction, InitialDataState } from "../utils/models";
 
-const initialData = {
-  list,
-  og,
+// export interface InitialDataState {
+//   // rename to todoreducerstate
+//   list: IResource[];
+//   og: IResource[];
+//   count: number;
+// }
+
+// const list: IResource[] = [];
+// const og: IResource[] = [];
+
+const initialData: InitialDataState = {
+  list: [],
+  og: [],
   count: 0,
 };
 
@@ -52,9 +62,10 @@ const todoReducers = (state = initialData, action: IAction) => {
 
     case "ADD_TODO":
       const { id, text, completed } = action.payload;
+      let count = state.count;
+      ++count;
 
-      ++state.count;
-      console.log(list);
+      // console.log(list);
       return {
         ...state,
         list: [
@@ -73,7 +84,7 @@ const todoReducers = (state = initialData, action: IAction) => {
             completed: completed,
           },
         ],
-        count: state.count,
+        count: count,
       };
 
     case "DELETE_TODO":

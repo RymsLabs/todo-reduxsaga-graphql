@@ -5,32 +5,35 @@ import { addTodo, checkAll, uncheckAll } from "../actions/index";
 import { RootState } from "../store";
 import Todo from "./Todo";
 import Footer from "./Footer";
-import { IResource } from "../reducers/todoReducers";
+import { InitialDataState } from "../utils/models";
+
 const Header: React.FC = memo(() => {
   const dispatch = useDispatch();
   const [inputData, setInputData] = useState<string>("");
   const [isChecked, setisChecked] = useState<boolean>(false);
   // const ref = useRef(null);
 
-  const list: any = useSelector((state: RootState) => state.todoReducers.list); // HAVE TO ASK SIR
-  const og = useSelector((state: RootState) => state.todoReducers.og);
+  const { list, og } = useSelector(
+    (state: RootState) => state.todoReducers as InitialDataState
+  ); // HAVE TO ASK SIR
+  // const og = useSelector((state: RootState) => state.todoReducers.og);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(addTodo(inputData));
     setInputData("");
-    // e.target.reset();
-    // ref.current.value = "";
   };
 
   const renderFooter = () => {
-    if (og.length > 0) return <Footer key={list.id} list={list} />; // ONE ERROR IN THIS LINE
+    if (og.length > 0) return <Footer />; // list = {list}
   };
+
   function handleCheck(): void {
     setisChecked(!isChecked);
     if (isChecked === false) dispatch(checkAll());
     else dispatch(uncheckAll());
   }
+
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setInputData(event.target.value);
   };
@@ -48,25 +51,20 @@ const Header: React.FC = memo(() => {
           ></input>
           <input
             className="w-[600px] text-3xl  italic"
-            // ref={ref}
             type="text"
             name="name"
             placeholder="What needs to be done?"
             value={inputData}
-            // onChange={(event) => setInputData(event.target.value)}
             onChange={handleInput}
           />
         </div>
       </form>
       <div>
         {list.map((elem) => {
-          return (
-            <div>
-              <Todo key={elem.id} list={elem} />
-            </div>
-          );
+          return <Todo key={elem.id} list={elem} />;
         })}
       </div>
+
       {renderFooter()}
     </div>
   );
