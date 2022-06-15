@@ -58,9 +58,9 @@ const Header: React.FC = memo(() => {
         </div>
       </form>
       <div>
-        {list.map((elem) => {
-          return <Todo key={elem.id} list={elem} />;
-        })}
+        {list.map((elem) => (
+          <Todo key={elem.id} list={elem} />
+        ))}
       </div>
 
       {renderFooter()}

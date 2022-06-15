@@ -1,20 +1,21 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { filterBtn } from "../utils/models";
+import { Filter, filterBtn } from "../utils/models";
 import {
   CompletedTodo,
   AllTodo,
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
+import { filters } from "../utils/constants";
 
 const Footer = memo(() => {
+  const dispatch = useDispatch();
   const count: number = useSelector(
     (state: RootState) => state.todoReducers.count
   );
-
-  const dispatch = useDispatch();
+  const [activeFilter, setActiveFilter] = useState<Filter>(filters[0]);
 
   const handleComplete = () => {
     dispatch(CompletedTodo());
@@ -32,36 +33,26 @@ const Footer = memo(() => {
     dispatch(ClearMarked());
   };
 
-  const filterBtn = [
-    {
-      id: 1,
-      title: "All",
-      isActive: true,
-      link: "",
-    },
-    {
-      id: 2,
-      title: "Active",
-      isActive: false,
-      link: "active",
-    },
-    {
-      id: 3,
-      title: "Completed",
-      isActive: false,
-      link: "completed",
-    },
-  ];
+  const activateButton = (btnid: number) => {
+    filters.map((btn) => {
+      if (btn.id === btnid) {
+        setActiveFilter(btn);
+      }
+    });
+  };
 
-  const onFiltersClick = (title: string) => {
+  const onFiltersClick = (title: string, btnid: number) => {
     switch (title) {
       case "All":
+        activateButton(btnid);
         handleAll();
         break;
       case "Active":
+        activateButton(btnid);
         handleActive();
         break;
       case "Completed":
+        activateButton(btnid);
         handleComplete();
         break;
     }
@@ -76,11 +67,16 @@ const Footer = memo(() => {
         </div>
 
         <div className="flex gap-4 items-center">
-          {filterBtn.map((btn) => {
+          {filters.map((btn) => {
+            const { title, id } = btn;
             return (
-              <ul key={btn.id}>
-                <FilterBtn {...btn} onFiltersClick={onFiltersClick} />
-              </ul>
+              <FilterBtn
+                key={id}
+                title={title}
+                btnid={id}
+                isActive={id === activeFilter.id}
+                onFiltersClick={onFiltersClick}
+              />
             );
           })}
         </div>
@@ -98,19 +94,17 @@ const Footer = memo(() => {
 });
 
 const FilterBtn = memo((props: filterBtn) => {
-  const { title, onFiltersClick, isActive } = props;
+  const { title, onFiltersClick, isActive, btnid } = props;
 
   return (
-    <>
-      <div className="border-1 p-1 text-center hover:cursor-pointer hover:ring ring-pink-100">
-        <button
-          className={`${isActive ? "selected" : ""}`}
-          onClick={() => onFiltersClick(title)}
-        >
-          {title}
-        </button>
-      </div>
-    </>
+    <button
+      className={`p-1 ${
+        isActive ? " ring-2 ring-pink-200 " : " hover:ring-1 ring-pink-200"
+      }`}
+      onClick={() => onFiltersClick(title, btnid)}
+    >
+      {title}
+    </button>
   );
 });
 export default Footer;
