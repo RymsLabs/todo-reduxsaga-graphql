@@ -1,22 +1,19 @@
-import { ChangeEvent, useRef, useState } from "react";
-import React, { memo } from "react";
+import React, { memo, ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, checkAll, uncheckAll } from "../actions/index";
 import { RootState } from "../store";
 import Todo from "./Todo";
 import Footer from "./Footer";
-import { InitialDataState } from "../utils/models";
+import { TodoReducerState } from "../utils/models";
 
 const Header: React.FC = memo(() => {
   const dispatch = useDispatch();
+  const { list, og } = useSelector(
+    (state: RootState) => state.todoReducers as TodoReducerState
+  );
+
   const [inputData, setInputData] = useState<string>("");
   const [isChecked, setisChecked] = useState<boolean>(false);
-  // const ref = useRef(null);
-
-  const { list, og } = useSelector(
-    (state: RootState) => state.todoReducers as InitialDataState
-  ); // HAVE TO ASK SIR
-  // const og = useSelector((state: RootState) => state.todoReducers.og);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -24,18 +21,18 @@ const Header: React.FC = memo(() => {
     setInputData("");
   };
 
-  const renderFooter = () => {
-    if (og.length > 0) return <Footer />; // list = {list}
-  };
-
-  function handleCheck(): void {
+  const handleCheck = (): void => {
     setisChecked(!isChecked);
     if (isChecked === false) dispatch(checkAll());
     else dispatch(uncheckAll());
-  }
+  };
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setInputData(event.target.value);
+  };
+
+  const renderFooter = () => {
+    if (og.length > 0) return <Footer />;
   };
 
   return (
@@ -49,6 +46,7 @@ const Header: React.FC = memo(() => {
             name="selectAll"
             onChange={handleCheck}
           ></input>
+
           <input
             className="w-[600px] text-3xl  italic"
             type="text"
