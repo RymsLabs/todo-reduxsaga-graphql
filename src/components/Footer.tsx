@@ -1,14 +1,15 @@
 import React, { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { Filter, filterBtn } from "../utils/models";
+import { Filter } from "../utils/models";
+import { filters } from "../utils/constants";
 import {
   CompletedTodo,
   AllTodo,
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
-import { filters } from "../utils/constants";
+import FilterBtn from "./FilterBtn";
 
 const Footer = memo(() => {
   const dispatch = useDispatch();
@@ -33,26 +34,26 @@ const Footer = memo(() => {
     dispatch(ClearMarked());
   };
 
-  const activateButton = (btnid: number) => {
+  const activateButton = (btnId: number) => {
     filters.map((btn) => {
-      if (btn.id === btnid) {
+      if (btn.id === btnId) {
         setActiveFilter(btn);
       }
     });
   };
 
-  const onFiltersClick = (title: string, btnid: number) => {
+  const onFiltersClick = (title: string, btnId: number) => {
     switch (title) {
       case "All":
-        activateButton(btnid);
+        activateButton(btnId);
         handleAll();
         break;
       case "Active":
-        activateButton(btnid);
+        activateButton(btnId);
         handleActive();
         break;
       case "Completed":
-        activateButton(btnid);
+        activateButton(btnId);
         handleComplete();
         break;
     }
@@ -73,7 +74,7 @@ const Footer = memo(() => {
               <FilterBtn
                 key={id}
                 title={title}
-                btnid={id}
+                btnId={id}
                 isActive={id === activeFilter.id}
                 onFiltersClick={onFiltersClick}
               />
@@ -93,18 +94,4 @@ const Footer = memo(() => {
   );
 });
 
-const FilterBtn = memo((props: filterBtn) => {
-  const { title, onFiltersClick, isActive, btnid } = props;
-
-  return (
-    <button
-      className={`p-1 ${
-        isActive ? " ring-2 ring-pink-200 " : " hover:ring-1 ring-pink-200"
-      }`}
-      onClick={() => onFiltersClick(title, btnid)}
-    >
-      {title}
-    </button>
-  );
-});
 export default Footer;

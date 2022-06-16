@@ -20,7 +20,7 @@ type TodoReducerState = {
 };
 
 type filterBtn = {
-  btnid: number;
+  btnId: number;
   title: string;
   onFiltersClick: (title: string, btnid: number) => void;
   isActive: boolean;
