@@ -2,9 +2,9 @@ import React, { memo, ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, checkAll, uncheckAll } from "../actions/index";
 import { RootState } from "../store";
-import Todo from "./Todo";
-import Footer from "./Footer";
-import { TodoReducerState } from "../utils/models";
+import { ListItem, TodoReducerState } from "../utils/models";
+import Footer from "./footer";
+import Todo from "./todo";
 
 const Header: React.FC = memo(() => {
   const dispatch = useDispatch();
@@ -58,8 +58,8 @@ const Header: React.FC = memo(() => {
         </div>
       </form>
       <div>
-        {list.map((elem) => (
-          <Todo key={elem.id} list={elem} />
+        {list.map((element: ListItem) => (
+          <Todo key={element.id} list={element} />
         ))}
       </div>
 

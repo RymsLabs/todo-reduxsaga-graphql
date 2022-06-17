@@ -9,7 +9,7 @@ import {
   ActiveTodo,
   ClearMarked,
 } from "../actions/index";
-import FilterBtn from "./FilterBtn";
+import FilterButtons from "./filterButtons";
 
 const Footer = memo(() => {
   const dispatch = useDispatch();
@@ -34,26 +34,23 @@ const Footer = memo(() => {
     dispatch(ClearMarked());
   };
 
-  const activateButton = (btnId: number) => {
-    filters.map((btn) => {
-      if (btn.id === btnId) {
-        setActiveFilter(btn);
-      }
-    });
+  const activateButton = (button: Filter) => {
+    setActiveFilter(button);
   };
 
-  const onFiltersClick = (title: string, btnId: number) => {
+  const onFiltersClick = (button: Filter) => {
+    const { title } = button;
     switch (title) {
       case "All":
-        activateButton(btnId);
+        activateButton(button);
         handleAll();
         break;
       case "Active":
-        activateButton(btnId);
+        activateButton(button);
         handleActive();
         break;
       case "Completed":
-        activateButton(btnId);
+        activateButton(button);
         handleComplete();
         break;
     }
@@ -68,14 +65,14 @@ const Footer = memo(() => {
         </div>
 
         <div className="flex gap-4 items-center">
-          {filters.map((btn) => {
-            const { title, id } = btn;
+          {filters.map((button: Filter) => {
+            const { id } = button;
+            const isActive = id === activeFilter.id;
             return (
-              <FilterBtn
+              <FilterButtons
                 key={id}
-                title={title}
-                btnId={id}
-                isActive={id === activeFilter.id}
+                button={button}
+                isActive={isActive}
                 onFiltersClick={onFiltersClick}
               />
             );

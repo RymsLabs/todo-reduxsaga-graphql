@@ -19,17 +19,10 @@ type TodoReducerState = {
   count: number;
 };
 
-type filterBtn = {
-  btnId: number;
-  title: string;
-  onFiltersClick: (title: string, btnid: number) => void;
-  isActive: boolean;
-};
-
 type Filter = {
   id: number;
   title: string;
   link: string;
 };
 
-export type { ListItem, Action, TodoReducerState, filterBtn, Filter };
+export type { ListItem, Action, TodoReducerState, Filter };

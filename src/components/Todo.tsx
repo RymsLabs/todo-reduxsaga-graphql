@@ -13,9 +13,9 @@ const Todo = memo((props: TodoProps) => {
   const { list } = props;
   const dispatch = useDispatch();
 
-  const [toggle, setToggle] = useState(true);
-  const [text, setText] = useState(list.data);
-  const [completed, setCompleted] = useState(false);
+  const [toggle, setToggle] = useState<boolean>(true);
+  const [text, setText] = useState<string>(list.data);
+  const [completed, setCompleted] = useState<boolean>(false);
 
   const toggleInput = (): void => {
     setToggle(false);
