@@ -3,20 +3,19 @@ import { deleteTodo } from "../actions/index";
 import cross from "../assets/closee.png";
 import { useDispatch } from "react-redux";
 import { markTodo, unmarkTodo, changeTodo } from "../actions/index";
+import { ListItem } from "../utils/models";
 
 type TodoProps = {
-  list: {
-    data: string;
-    id: number;
-    completed: boolean;
-  };
+  list: ListItem;
 };
 
 const Todo = memo((props: TodoProps) => {
   const { list } = props;
-  const [toggle, setToggle] = useState(true);
-  const [text, setText] = useState(list.data);
-  const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch();
+
+  const [toggle, setToggle] = useState<boolean>(true);
+  const [text, setText] = useState<string>(list.data);
+  const [completed, setCompleted] = useState<boolean>(false);
 
   const toggleInput = (): void => {
     setToggle(false);
@@ -36,8 +35,6 @@ const Todo = memo((props: TodoProps) => {
     if (completed === false) dispatch(markTodo(list.id, !completed));
     else dispatch(unmarkTodo(list.id, !completed));
   };
-
-  const dispatch = useDispatch();
 
   return (
     <div>
@@ -87,4 +84,5 @@ const Todo = memo((props: TodoProps) => {
     </div>
   );
 });
+
 export default Todo;
