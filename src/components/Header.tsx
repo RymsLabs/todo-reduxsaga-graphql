@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo, checkAll, uncheckAll } from "../actions/index";
 import { RootState } from "../store";
 import { ListItem, TodoReducerState } from "../utils/models";
-import Footer from "./footer";
-import Todo from "./todo";
+import Footer from "./Footer";
+import Todo from "./Todo";
 
 const Header: React.FC = memo(() => {
+  //testing commit
   const dispatch = useDispatch();
   const { list, og } = useSelector(
     (state: RootState) => state.todoReducers as TodoReducerState
